@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.ludigi</groupId>
     <artifactId>flashcards</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>flashcards</name>
     <description>flashcards</description>
     <url/>
