@@ -16,7 +16,7 @@ public class QuestionController {
 
     @GetMapping("/api/questions")
     ResponseEntity<List<Question>> getQuestions() {
-        return ResponseEntity.ok(List.of());
+        return ResponseEntity.ok(questionRepository.findAll());
     }
 
 }
