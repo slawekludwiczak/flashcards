@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class QuestionRepository {
@@ -15,5 +16,15 @@ public class QuestionRepository {
 
     public List<Question> findAll() {
         return questions;
+    }
+
+    Optional<Question> findById(Integer id) {
+        if (id == null) {
+            throw new NullPointerException("Id cannot be null");
+        }
+        if (id < 0 || id > questions.size()) {
+            return Optional.empty();
+        }
+        return Optional.of(questions.get(id - 1));
     }
 }

@@ -2,6 +2,7 @@ package com.ludigi.flashcards;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,6 +18,13 @@ public class QuestionController {
     @GetMapping("/api/questions")
     ResponseEntity<List<Question>> getQuestions() {
         return ResponseEntity.ok(questionRepository.findAll());
+    }
+
+    @GetMapping("/api/questions/{id}")
+    ResponseEntity<Question> getQuestion(@PathVariable("id") Integer id) {
+        return questionRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }
