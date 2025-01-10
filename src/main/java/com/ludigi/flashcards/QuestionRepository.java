@@ -27,4 +27,14 @@ public class QuestionRepository {
         }
         return Optional.of(questions.get(id - 1));
     }
+    
+    public Integer add(Question question) {
+        if (question.getId() != null) {
+            throw new IllegalArgumentException("Question already has id");
+        }
+        question.setId(questions.size() + 1);
+        questions.add(question);
+        return question.getId();
+    }
+
 }
