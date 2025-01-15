@@ -9,6 +9,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,5 +46,38 @@ class FlashcardControllerTest {
                             "question": "%s"
                         }
                         """.formatted(flashcard.getId(), flashcard.getQuestion().getQuestion()));
+    }
+
+    @Test
+    void shouldReturn404ForNonExistingFlashcard() {
+        when(flashcardService.verifyAnswer(any(), any()))
+                .thenReturn(Optional.empty());
+        testClient.post().uri("/api/flashcards/%s/answer".formatted(UUID.randomUUID()))
+                .bodyValue("some answer")
+                .exchange()
+                .expectStatus().isEqualTo(404)
+                .expectBody().isEmpty();
+    }
+
+    @Test
+    void shouldReturn200WithTrueForCorrectAnswer() {
+        when(flashcardService.verifyAnswer(any(), any()))
+                .thenReturn(Optional.of(true));
+        testClient.post().uri("/api/flashcards/%s/answer".formatted(UUID.randomUUID()))
+                .bodyValue("some answer")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Boolean.class).isEqualTo(true);
+    }
+
+    @Test
+    void shouldReturn200WithFalseForCorrectAnswer() {
+        when(flashcardService.verifyAnswer(any(), any()))
+                .thenReturn(Optional.of(false));
+        testClient.post().uri("/api/flashcards/%s/answer".formatted(UUID.randomUUID()))
+                .bodyValue("some answer")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Boolean.class).isEqualTo(false);
     }
 }
