@@ -23,4 +23,10 @@ public class FlashcardService {
         flashcard.ifPresent(flashcards::add);
         return flashcard;
     }
+
+    Optional<Boolean> verifyAnswer(UUID id, String answer) {
+        Optional<Flashcard> flashcard = flashcards.findById(id);
+        flashcard.ifPresent(value -> value.setAnswer(answer));
+        return flashcard.map(Flashcard::isAnswerCorrect);
+    }
 }
