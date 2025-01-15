@@ -5,9 +5,11 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Repository
 public class QuestionRepository {
+    private final Random random = new Random();
     private final List<Question> questions = new ArrayList<>();
 
     public QuestionRepository() {
@@ -35,6 +37,14 @@ public class QuestionRepository {
         question.setId(questions.size() + 1);
         questions.add(question);
         return question.getId();
+    }
+
+    public Optional<Question> findRandom() {
+        if (questions.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(questions.get(random.nextInt(questions.size())));
+        }
     }
 
 }
